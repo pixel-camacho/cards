@@ -1,0 +1,12 @@
+.form-control-sm{
+    width: 80%;
+}
+#btn, .card{
+    border-radius: 25px;
+}
+.card-img-top, #btn{
+    margin-right: auto;
+    margin-left: auto;
+    display: block;
+    width: 50%;
+}
