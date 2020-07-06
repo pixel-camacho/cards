@@ -5,26 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
-    <%- include('partials/head.ejs')-%>
+    <%- include('../partials/head.ejs')-%>
     <style>
-        body {font-family: 'Bangers', cursive;}
-        .form-control-sm{
-    width: 80%;
-}
-#btn, .card{
-    border-radius: 25px;
-}
-.card-img-top, #btn{
-    margin-right: auto;
-    margin-left: auto;
-    display: block;
-    width: 50%;
-}
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
     </style>
 </head>
 
 <body>
-    <%- include('partials/navigation.ejs')-%>
+    <%- include('../partials/navigation.ejs')-%>
 
     <div class="container">
         <div class="row">
@@ -35,13 +25,14 @@
                     </div>
                     <div class="card-body">
                         <img src="img/user.png" alt="Logo Usuario" class="card-img-top w-50">
-                        <form action="cards/sign-in" method="POST" >
+                        <form action="/signin" method="POST">
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-prepend">
                                         <span class="input-group-text my-3"><i class="fas fa-user fa-1x"></i></span>
                                     </div>
-                                    <input type="text" name="username" id="username" class="form-control-sm my-3" autofocus>
+                                    <input type="text" name="username" id="username" class="form-control-sm my-3"
+                                        autofocus>
                                 </div>
                             </div>
                             <div class="from-group">
@@ -49,10 +40,13 @@
                                     <div class="input-prepend">
                                         <span class="input-group-text"> <i class="fas fa-lock fa-1x"></i></span>
                                     </div>
-                                    <input type="password" name="password"  id="password" class="form-control-sm">
+                                    <input type="password" name="password" id="password" class="form-control-sm">
                                 </div>
                             </div>
-                            <button class="btn btn-primary btn-block text-center mx-auto my-4" id="btn">Acceder</button>
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-block  mx-auto my-4" id="btn"
+                                    type="submit">Acceder</button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -60,7 +54,7 @@
         </div>
     </div>
 
-    <%- include('partials/footer.ejs')-%>
+    <%- include('../partials/footer.ejs')-%>
 </body>
 
 </html>
