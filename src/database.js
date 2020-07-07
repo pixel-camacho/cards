@@ -23,9 +23,10 @@ conn.getConnection((err, connection) =>{
     }
 
     if(connection) connection.release();
-    console.log('DB is connected')
+    console.log('DB is connected');
     return;
 });
 
 conn.query = promisify(conn.query);
+
 module.exports =  conn;

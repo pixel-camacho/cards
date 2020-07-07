@@ -5,8 +5,11 @@ require('./database');
 const express = require('express');
 const morgan  = require('morgan');
 const path    = require('path');
-const bodyparser =  require('body-parser');
 const flash   = require('connect-flash');
+const session = require('express-session');
+const mysqlStore = require('express-mysql-session');
+const passport = require('passport');
+const { database } = require('./config');
 
 // initialize
 const app = express();
@@ -14,17 +17,21 @@ const app = express();
 // setting
 app.set('port',process.env.PORT || 3000);
 app.set('views',path.join(__dirname, 'views'));
-app.set('views engine', 'ejs');
-
-//routes
-app.use(require('./routes/index.routes'));
-app.use(require('./routes/login.routes'));
+app.set('view engine', 'ejs');
 
 // Middleware
+app.use(session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: new mysqlStore(database)
+}));
 app.use(flash());
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Static file
 app.use(express.static(path.join(__dirname, 'public')));
@@ -33,7 +40,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use( (req, res, next)=>{
     app.locals.success = req.flash('success');
     app.locals.message = req.flash('message');
+    app.locals.user = req.usuario;
+    console.log(app.locals); 
     next();
-})
+});
 
-module.exports = app;
+//routes
+app.use(require('./routes/authenticator.routes'));
+
+
+module.exports =  app;

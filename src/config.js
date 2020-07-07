@@ -1,9 +1,9 @@
 module.exports = {
 
     database:{
-        host: process.env.HOST_DB,
-        user: process.env.USER_DB,
-        pass: process.env.PASS_DB,
-        name: process.env.NAME_DB 
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASS,
+        database: process.env.DB_NAME 
     }
 }
