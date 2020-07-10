@@ -1,24 +1,26 @@
 const {Router} = require('express');
 const router = Router();
 
-const passport = require('passport');
-const {sign_up} = require('../controller/auth.controller');
+const {sign_up, sign_in} = require('../controller/auth.controller');
+const {isLogenIn, isNotLogeIn} = require('../lib/helper');
 
-router.get('/sign-in', (req, res) =>{
+
+
+router.get('/sign-in', isNotLogeIn ,(req, res) =>{
     res.render('pages/login.ejs',{title:'Iniciar session'});
 });
 
-router.post('/sign-in', passport.authenticate('local',{
-        successRedirect: '/home',
-        failureRedirect: '/sign-in',
-        failureFlash: true 
-    }));
+router.post('/sign-in', sign_in);
+  
+router.post('/sign-up', sign_up);
 
-router.get('/home', (req,res) =>{
+router.get('/home',isLogenIn,(req,res) =>{
     res.render('pages/Home.ejs')
 });
 
-router.post('/sign-up', sign_up);
-
+router.get('/cerrarSession', (req, res) =>{
+    req.logOut();
+    res.redirect('/cards/sign-in');
+})
 
 module.exports = router;

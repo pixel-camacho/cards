@@ -1,18 +1,21 @@
 require('dotenv').config();
-require('./database');
+
 
 // dependencias
-const express = require('express');
-const morgan  = require('morgan');
-const path    = require('path');
-const flash   = require('connect-flash');
-const session = require('express-session');
-const mysqlStore = require('express-mysql-session');
-const passport = require('passport');
+const express   = require('express');
+const morgan    = require('morgan');
+const path      = require('path');
+const session   = require('express-session');
+const flash     = require('connect-flash');
+const passport  = require('passport');
+const mysqlStore = require('express-mysql-session')(session);
 const { database } = require('./config');
+
+require('./database');
 
 // initialize
 const app = express();
+require('./lib/passport');
 
 // setting
 app.set('port',process.env.PORT || 3000);
@@ -40,13 +43,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use( (req, res, next)=>{
     app.locals.success = req.flash('success');
     app.locals.message = req.flash('message');
-    app.locals.user = req.usuario;
-    console.log(app.locals); 
+    app.locals.user = req.user;
+    console.log(req.user);
     next();
 });
 
 //routes
-app.use(require('./routes/authenticator.routes'));
+app.use('/cards',require('./routes/authenticator.routes'));
 
 
 module.exports =  app;

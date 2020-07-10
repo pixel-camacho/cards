@@ -1,39 +1,20 @@
-const conn = require('../database');
-const helper =  require('../lib/helper');
 const passport =  require('passport');
 const LocalStrategy  = require('passport-local').Strategy;
 
-/* passport.use('local.signup',new LocalStrategy({
-    usernameField: 'user',
-    passwordField: 'pass',
-    passReqToCallback: true
-}, async (req, user, pass, done)=>{
+const conn = require('../database');
+const helper =  require('./helper');
 
-    const {mail,name} = req.body;
-    const nuevoUsuario = {
-        user,
-        name,
-        mail,
-        pass
-    };
-    nuevoUsuario.pass = await helper.encryptPassword(pass);
-    const  resultado =  await conn.query('INSERT INTO usuarios SET ? ',[nuevoUsuario]);
-    nuevoUsuario.id =  resultado.insertId;
-    return done(null, nuevoUsuario);
-})); 
-*/
-
-passport.use(new LocalStrategy ({
+passport.use('local.signin',new LocalStrategy ({
     usernameField: 'usuario',
     passwordField: 'password',
     passReqToCallback: true
 }, async (req, usuario, password, done) =>{
-    const localizados =  await conn.query('SELECT * FROM usuarios WHERE usuario = ? ',[usuario])
-    if(localizados > 0){
-        const user = localizados[0]
-        const valida =  await helper.matchPassword(password,user.password);
+    const localizados =  await conn.query('SELECT * FROM usuarios WHERE usuario = ?',[usuario])
+    if(localizados.length > 0){
+        const usuario = localizados[0]
+        const valida =  await helper.matchPassword(password, usuario.password);
         if(valida){
-            done(null, user, req.flash('success','Welcome '+ user.nombre));
+            done(null, usuario, req.flash('success','Welcome '+ usuario.nombre));
         }else{
             done(null,false, req.flash('message','Incorrect password'));
         }
@@ -42,8 +23,28 @@ passport.use(new LocalStrategy ({
     }
 }));
 
-passport.serializeUser((user,done) =>{
-    done(null,user.id)
+passport.use('local.signup',new LocalStrategy({
+    usernameField: 'usuario',
+    passwordField: 'password',
+    passReqToCallback: true
+}, async(req, usuario, password, done)=>{
+
+    const {correo,nombre} = req.body;
+    const nuevoUsuario = {
+        usuario,
+        nombre,
+        correo,
+        password
+    };
+    nuevoUsuario.password = await helper.encryptPassword(password);
+    const  resultado =  await conn.query('INSERT INTO usuarios SET ?',nuevoUsuario);
+    nuevoUsuario.id =  resultado.insertId;
+    return done(null, nuevoUsuario);
+})); 
+
+
+passport.serializeUser((usuario,done) =>{
+    done(null,usuario.id)
 });
 
 passport.deserializeUser(async(id, done)=>{

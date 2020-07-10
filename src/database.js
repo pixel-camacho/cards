@@ -17,7 +17,7 @@ conn.getConnection((err, connection) =>{
             return;
         }
         if(err.code === 'ECONNREFUSED'){
-            console.error('LA CONEXION DE LA BASE DE DATOS FUE RECHAZAD')
+            console.error('LA CONEXION DE LA BASE DE DATOS FUE RECHAZADA')
             return;
         }
     }

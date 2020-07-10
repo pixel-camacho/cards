@@ -1,7 +1,7 @@
 .form-control-sm{
     width: 80%;
 }
-#btn, .card{
+#btn{
     border-radius: 25px;
 }
 .card-img-top, #btn{
