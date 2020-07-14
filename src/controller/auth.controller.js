@@ -1,6 +1,7 @@
-const conn = require("../database");
-const helpers = require("../lib/helper");
+const conn     = require("../database");
+const helpers  = require("../lib/helper");
 const passport = require("passport");
+const querys   =  require('../querys/SELECT');
 
 const authController = {};
 
@@ -9,6 +10,7 @@ authController.sign_in = passport.authenticate("local.signin", {
   failureRedirect: "/cards/sign-in",
   failureFlash: true,
 });
+
 
 authController.sign_up = async (req, res) => {
   const { usuario, nombre, correo, password } = req.body;
@@ -25,5 +27,10 @@ authController.sign_up = async (req, res) => {
   req.flash("success", "Usuario agregado");
   res.send({ status: "OK", data: newUser });
 };
+
+authController.home = async (req, res) =>{
+  const cards = await querys.obtenerAlumnos();
+  res.render('pages/Home.ejs',{cards: cards});
+}
 
 module.exports = authController;

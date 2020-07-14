@@ -1,16 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>home</title>
     <%- include('../partials/head.ejs')-%>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
 </head>
+
 <body>
     <%- include('../partials/navigation.ejs')-%>
     <%- include('../partials/message.ejs')-%>
-    
+
+    <div class="container">
+        <div class="row my-4">
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="list-group-flush">
+                            <div class="form-group">
+                                <input type="text" name="buscar" id="buscar" class="form-control"
+                                    placeholder="Buscar Alumno">
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-dark btn-block" id="add">Agregar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-borderless table-hover text-center" id="table">
+                                <thead >
+                                    <tr>
+                                        <th>Nombre completo</th>
+                                        <th>Grado</th>
+                                        <th>Grupo</th>
+                                        <th>Ciclo</th>
+                                        <th>Operaciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for (let card of cards) { %>
+                                    <tr id="card">
+                                        <td><%= card.nombre %></td>
+                                        <td><%= card.grado %></td>
+                                        <td><%= card.grupo %></td>
+                                        <td><%= card.periodo %></td>
+                                        <td>
+                                            <ul class="list-unstyled list-inline">
+                                                <li class="list-inline-item"><a
+                                                        href="/cards/create/<%= card.id_alumno %>">Crear</a></li>
+                                                <li class="list-inline-item"><a href="">Editar</a></li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
     <%- include('../partials/footer.ejs')-%>
 </body>
+
 </html>

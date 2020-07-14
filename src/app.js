@@ -43,13 +43,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use( (req, res, next)=>{
     app.locals.success = req.flash('success');
     app.locals.message = req.flash('message');
+    app.locals.info = req.flash('info'); 
     app.locals.user = req.user;
-    console.log(req.user);
     next();
+    console.log(app.locals.message);
 });
 
 //routes
 app.use('/cards',require('./routes/authenticator.routes'));
+app.use('/cards',require('./routes/cards.routes'));
 
 
 module.exports =  app;
